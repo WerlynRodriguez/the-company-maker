@@ -2,21 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Company {
-  name: String!
-}
-
-input CompanyInput {
+type CompanyType {
+  id: ID!
   name: String!
 }
 
 type Mutation {
-  createCompany(input: CompanyInput!): Company!
-  deleteCompany(id: ID!): Company!
-  updateCompany(id: ID!, input: CompanyInput!): Company!
+  createCompany(
+    """The name of the company"""
+    name: String!
+  ): CompanyType!
 }
 
 type Query {
-  companies: [Company!]!
-  company(id: ID!): Company!
+  companies: [CompanyType!]!
+  company(id: ID!): CompanyType!
 }
