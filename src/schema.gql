@@ -1,0 +1,22 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Company {
+  name: String!
+}
+
+input CompanyInput {
+  name: String!
+}
+
+type Mutation {
+  createCompany(input: CompanyInput!): Company!
+  deleteCompany(id: ID!): Company!
+  updateCompany(id: ID!, input: CompanyInput!): Company!
+}
+
+type Query {
+  companies: [Company!]!
+  company(id: ID!): Company!
+}
