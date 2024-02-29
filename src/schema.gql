@@ -2,19 +2,62 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type CompanyType {
+type Company {
+  employees: [Employee!]!
   id: ID!
   name: String!
 }
 
+type Employee {
+  age: Float!
+  firstName: String!
+  id: ID!
+  lastName: String!
+}
+
+input EmployeeUpdateInput {
+  """The age of the employee"""
+  age: Float
+
+  """The first name of the employee"""
+  firstName: String
+
+  """The last name of the employee"""
+  lastName: String
+}
+
 type Mutation {
   createCompany(
+    """The employees ids of the company"""
+    employees: [String!]
+
     """The name of the company"""
     name: String!
-  ): CompanyType!
+  ): Company!
+  createEmployee(
+    """The age of the employee"""
+    age: Float!
+
+    """The first name of the employee"""
+    firstName: String!
+
+    """The last name of the employee"""
+    lastName: String!
+  ): Employee!
+  deleteCompany(id: ID!): Company!
+  deleteEmployee(id: ID!): Employee!
+  updateEmployee(
+    """The id of the employee"""
+    id: String!
+
+    """The data of the employee"""
+    input: EmployeeUpdateInput!
+  ): Employee!
 }
 
 type Query {
-  companies: [CompanyType!]!
-  company(id: ID!): CompanyType!
+  companies: [Company!]!
+  company(id: ID!): Company!
+  employee(id: ID!): Employee!
+  employees: [Employee!]!
 }

@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { CompanyService } from './company.service';
-import { CompanyArgs } from './dto/company.args';
+import { CreateCompanyArgs } from './dto/create-company.args';
+import { UpdateCompanyArgs } from './dto/update-company.args';
 import { CompanyType } from 'src/schemas/company.schema';
 
 @Resolver(() => CompanyType)
@@ -18,20 +19,18 @@ export class CompanyResolver {
   }
 
   @Mutation(() => CompanyType)
-  async createCompany(@Args() args: CompanyArgs) {
+  async createCompany(@Args() args: CreateCompanyArgs) {
     return this.companyService.create(args);
   }
 
-  // @Mutation(() => Company)
-  // async updateCompany(
-  //   @Args('id', { type: () => ID }) id: string,
-  //   @Args('input') input: CompanyArgs,
-  // ) {
-  //   return this.companyService.update(id, input);
-  // }
+  @Mutation(() => CompanyType)
+  async updateCompany(@Args() args: UpdateCompanyArgs) {
+    const { id, input } = args;
+    return this.companyService.update(id, input);
+  }
 
-  // @Mutation(() => Company)
-  // async deleteCompany(@Args('id', { type: () => ID }) id: string) {
-  //   return this.companyService.remove(id);
-  // }
+  @Mutation(() => CompanyType)
+  async deleteCompany(@Args('id', { type: () => ID }) id: string) {
+    return this.companyService.remove(id);
+  }
 }

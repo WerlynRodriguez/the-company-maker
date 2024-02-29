@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { EmployeeModule } from './employee/employee.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { join } from 'path';
       sortSchema: true,
       playground: true,
     }),
+    EmployeeModule,
     CompanyModule,
   ],
 })
