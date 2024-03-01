@@ -1,8 +1,8 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsNumber, IsString, Length, Max, Min } from 'class-validator';
 
-@ArgsType()
-export class CreateEmployeeArgs {
+@InputType()
+export class CreateEmployeeInput {
   @Field(() => String, {
     description: 'The first name of the employee',
   })

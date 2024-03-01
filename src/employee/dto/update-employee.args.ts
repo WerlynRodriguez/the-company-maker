@@ -1,41 +1,9 @@
-import { ArgsType, Field, InputType } from '@nestjs/graphql';
-import {
-  IsMongoId,
-  IsNotEmptyObject,
-  IsNumber,
-  IsString,
-  Length,
-  Max,
-  Min,
-} from 'class-validator';
+import { ArgsType, Field, InputType, PartialType } from '@nestjs/graphql';
+import { IsMongoId, IsNotEmptyObject } from 'class-validator';
+import { CreateEmployeeInput } from './create-employee.args';
 
 @InputType()
-export class UpdateEmployeeInput {
-  @Field(() => String, {
-    description: 'The first name of the employee',
-    nullable: true,
-  })
-  @IsString()
-  @Length(3, 50)
-  firstName: string;
-
-  @Field(() => String, {
-    description: 'The last name of the employee',
-    nullable: true,
-  })
-  @IsString()
-  @Length(3, 50)
-  lastName: string;
-
-  @Field(() => Number, {
-    description: 'The age of the employee',
-    nullable: true,
-  })
-  @IsNumber()
-  @Max(65)
-  @Min(18)
-  age: number;
-}
+export class UpdateEmployeeInput extends PartialType(CreateEmployeeInput) {}
 
 @ArgsType()
 export class UpdateEmployeeArgs {

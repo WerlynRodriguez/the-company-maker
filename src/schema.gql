@@ -8,6 +8,25 @@ type Company {
   name: String!
 }
 
+input CreateCompanyInput {
+  """The employees ids of the company"""
+  employees: [String!]
+
+  """The name of the company"""
+  name: String!
+}
+
+input CreateEmployeeInput {
+  """The age of the employee"""
+  age: Float!
+
+  """The first name of the employee"""
+  firstName: String!
+
+  """The last name of the employee"""
+  lastName: String!
+}
+
 type Employee {
   age: Float!
   firstName: String!
@@ -23,23 +42,8 @@ type Mutation {
     """The id of the company"""
     id: ID!
   ): Company!
-  createCompany(
-    """The employees ids of the company"""
-    employees: [String!] = []
-
-    """The name of the company"""
-    name: String!
-  ): Company!
-  createEmployee(
-    """The age of the employee"""
-    age: Float!
-
-    """The first name of the employee"""
-    firstName: String!
-
-    """The last name of the employee"""
-    lastName: String!
-  ): Employee!
+  createCompany(input: CreateCompanyInput!): Company!
+  createEmployee(input: CreateEmployeeInput!): Employee!
   deleteCompany(id: ID!): Company!
   deleteEmployee(id: ID!): Employee!
   removeEmployeesFromCompany(

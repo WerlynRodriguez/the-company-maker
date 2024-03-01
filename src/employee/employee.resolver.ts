@@ -2,7 +2,7 @@ import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
 import { EmployeeType } from 'src/schemas/employee.schema';
 import { EmployeeService } from './employee.service';
 import { Query } from '@nestjs/graphql';
-import { CreateEmployeeArgs } from './dto/create-employee.args';
+import { CreateEmployeeInput } from './dto/create-employee.args';
 import { UpdateEmployeeArgs } from './dto/update-employee.args';
 import { GetAllEmployeeArgs } from './dto/getall-employee.args';
 
@@ -23,8 +23,11 @@ export class EmployeeResolver {
   }
 
   @Mutation(() => EmployeeType)
-  async createEmployee(@Args() args: CreateEmployeeArgs) {
-    return this.employeeService.create(args);
+  async createEmployee(
+    @Args('input', { type: () => CreateEmployeeInput })
+    input: CreateEmployeeInput,
+  ) {
+    return this.employeeService.create(input);
   }
 
   @Mutation(() => EmployeeType)

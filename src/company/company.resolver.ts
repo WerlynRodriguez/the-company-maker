@@ -8,7 +8,7 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { CompanyService } from './company.service';
-import { CreateCompanyArgs } from './dto/create-company.args';
+import { CreateCompanyInput } from './dto/create-company.args';
 import { UpdateCompanyArgs } from './dto/update-company.args';
 import { CompanyType } from 'src/schemas/company.schema';
 import { ModifyEmployToCompanyArgs } from './dto/modify-employtocompany.args';
@@ -35,8 +35,11 @@ export class CompanyResolver {
   }
 
   @Mutation(() => CompanyType)
-  async createCompany(@Args() args: CreateCompanyArgs) {
-    return this.companyService.create(args);
+  async createCompany(
+    @Args('input', { type: () => CreateCompanyInput })
+    input: CreateCompanyInput,
+  ) {
+    return this.companyService.create(input);
   }
 
   @Mutation(() => CompanyType)

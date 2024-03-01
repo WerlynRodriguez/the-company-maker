@@ -1,30 +1,9 @@
-import { ArgsType, Field, InputType } from '@nestjs/graphql';
-import {
-  IsArray,
-  IsMongoId,
-  IsNotEmptyObject,
-  IsString,
-  Length,
-} from 'class-validator';
+import { ArgsType, Field, InputType, PartialType } from '@nestjs/graphql';
+import { IsMongoId, IsNotEmptyObject } from 'class-validator';
+import { CreateCompanyInput } from './create-company.args';
 
 @InputType()
-export class UpdateCompanyInput {
-  @Field(() => String, {
-    description: 'The name of the company',
-    nullable: true,
-  })
-  @IsString()
-  @Length(3, 50)
-  name: string;
-
-  @Field(() => [String], {
-    description: 'The employees ids of the company',
-    nullable: true,
-  })
-  @IsArray()
-  @IsMongoId({ each: true })
-  employees: string[];
-}
+export class UpdateCompanyInput extends PartialType(CreateCompanyInput) {}
 
 @ArgsType()
 export class UpdateCompanyArgs {

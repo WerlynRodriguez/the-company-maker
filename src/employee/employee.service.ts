@@ -60,7 +60,7 @@ export class EmployeeService {
    * @param id - employee id
    * @param employee - employee data
    */
-  async update(id: string, employee: Employee): Promise<Employee> {
+  async update(id: string, employee: Partial<Employee>): Promise<Employee> {
     return this.employeeModel
       .findByIdAndUpdate(id, employee, {
         new: true,

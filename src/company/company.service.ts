@@ -51,7 +51,7 @@ export class CompanyService {
    * @param id - company id
    * @param company - company data
    */
-  async update(id: string, company: Company): Promise<Company> {
+  async update(id: string, company: Partial<Company>): Promise<Company> {
     return this.companyModel
       .findByIdAndUpdate(id, company, {
         new: true,
