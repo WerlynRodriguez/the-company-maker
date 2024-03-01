@@ -56,6 +56,12 @@ export class CompanyResolver {
     return this.companyService.addEmployees(id, employeeIds);
   }
 
+  @Mutation(() => CompanyType)
+  async removeEmployeesFromCompany(@Args() args: ModifyEmployToCompanyArgs) {
+    const { id, employeeIds } = args;
+    return this.companyService.removeEmployees(id, employeeIds);
+  }
+
   @ResolveField()
   async employees(@Parent() company: CompanyType) {
     return this.employeeService.findMany(company.employees);

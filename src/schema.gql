@@ -42,6 +42,13 @@ type Mutation {
   ): Employee!
   deleteCompany(id: ID!): Company!
   deleteEmployee(id: ID!): Employee!
+  removeEmployeesFromCompany(
+    """The ids of the employees"""
+    employeeIds: [ID!]!
+
+    """The id of the company"""
+    id: ID!
+  ): Company!
   updateCompany(
     """The id of the company"""
     id: String!
