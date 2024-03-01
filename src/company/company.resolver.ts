@@ -1,12 +1,25 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { CompanyService } from './company.service';
 import { CreateCompanyArgs } from './dto/create-company.args';
 import { UpdateCompanyArgs } from './dto/update-company.args';
 import { CompanyType } from 'src/schemas/company.schema';
+import { ModifyEmployToCompanyArgs } from './dto/modify-employtocompany.args';
+import { EmployeeService } from 'src/employee/employee.service';
 
 @Resolver(() => CompanyType)
 export class CompanyResolver {
-  constructor(private readonly companyService: CompanyService) {}
+  constructor(
+    private readonly companyService: CompanyService,
+    private readonly employeeService: EmployeeService,
+  ) {}
 
   @Query(() => [CompanyType])
   async companies() {
@@ -32,5 +45,16 @@ export class CompanyResolver {
   @Mutation(() => CompanyType)
   async deleteCompany(@Args('id', { type: () => ID }) id: string) {
     return this.companyService.remove(id);
+  }
+
+  @Mutation(() => CompanyType)
+  async addEmployeesToCompany(@Args() args: ModifyEmployToCompanyArgs) {
+    const { id, employeeIds } = args;
+    return this.companyService.addEmployees(id, employeeIds);
+  }
+
+  @ResolveField()
+  async employees(@Parent() company: CompanyType) {
+    return this.employeeService.findMany(company.employees);
   }
 }

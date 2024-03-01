@@ -14,5 +14,6 @@ import { EmployeeSchema } from 'src/schemas/employee.schema';
     ]),
   ],
   providers: [EmployeeService, EmployeeResolver],
+  exports: [EmployeeService],
 })
 export class EmployeeModule {}

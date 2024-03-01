@@ -15,21 +15,17 @@ type Employee {
   lastName: String!
 }
 
-input EmployeeUpdateInput {
-  """The age of the employee"""
-  age: Float
-
-  """The first name of the employee"""
-  firstName: String
-
-  """The last name of the employee"""
-  lastName: String
-}
-
 type Mutation {
+  addEmployeesToCompany(
+    """The ids of the employees"""
+    employeeIds: [ID!]!
+
+    """The id of the company"""
+    id: ID!
+  ): Company!
   createCompany(
     """The employees ids of the company"""
-    employees: [String!]
+    employees: [String!] = []
 
     """The name of the company"""
     name: String!
@@ -46,12 +42,19 @@ type Mutation {
   ): Employee!
   deleteCompany(id: ID!): Company!
   deleteEmployee(id: ID!): Employee!
+  updateCompany(
+    """The id of the company"""
+    id: String!
+
+    """The data of the company"""
+    input: UpdateCompanyInput!
+  ): Company!
   updateEmployee(
     """The id of the employee"""
     id: String!
 
     """The data of the employee"""
-    input: EmployeeUpdateInput!
+    input: UpdateEmployeeInput!
   ): Employee!
 }
 
@@ -60,4 +63,23 @@ type Query {
   company(id: ID!): Company!
   employee(id: ID!): Employee!
   employees: [Employee!]!
+}
+
+input UpdateCompanyInput {
+  """The employees ids of the company"""
+  employees: [String!]
+
+  """The name of the company"""
+  name: String
+}
+
+input UpdateEmployeeInput {
+  """The age of the employee"""
+  age: Float
+
+  """The first name of the employee"""
+  firstName: String
+
+  """The last name of the employee"""
+  lastName: String
 }

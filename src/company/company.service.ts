@@ -54,4 +54,38 @@ export class CompanyService {
   async remove(id: string) {
     return this.companyModel.findByIdAndDelete(id).exec();
   }
+
+  /**
+   * Add employees to a company
+   * @param id - company id
+   * @param employees - employees ids
+   */
+  async addEmployees(id: string, employees: string[]) {
+    const company = await this.companyModel.findOne({ _id: id }).exec();
+
+    if (!company) {
+      return null;
+    }
+
+    company.employees = [...company.employees, ...employees];
+    return company.save();
+  }
+
+  /**
+   * Remove employees from a company
+   * @param id - company id
+   * @param employees - employees ids
+   */
+  async removeEmployees(id: string, employees: string[]) {
+    const company = await this.companyModel.findOne({ _id: id }).exec();
+
+    if (!company) {
+      return null;
+    }
+
+    company.employees = company.employees.filter(
+      (employee) => !employees.includes(employee),
+    );
+    return company.save();
+  }
 }

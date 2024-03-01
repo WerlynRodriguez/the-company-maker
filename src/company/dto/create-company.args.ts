@@ -1,5 +1,5 @@
 import { ArgsType, Field } from '@nestjs/graphql';
-import { IsString, Length } from 'class-validator';
+import { IsArray, IsMongoId, IsString, Length } from 'class-validator';
 
 @ArgsType()
 export class CreateCompanyArgs {
@@ -13,10 +13,9 @@ export class CreateCompanyArgs {
   @Field(() => [String], {
     description: 'The employees ids of the company',
     nullable: true,
+    defaultValue: [],
   })
-  @IsString({
-    each: true,
-    message: 'Employees must be a string',
-  })
+  @IsArray()
+  @IsMongoId({ each: true })
   employees: string[];
 }

@@ -1,5 +1,6 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import {
+  IsMongoId,
   IsNotEmptyObject,
   IsNumber,
   IsString,
@@ -41,7 +42,7 @@ export class UpdateEmployeeArgs {
   @Field(() => String, {
     description: 'The id of the employee',
   })
-  @IsString()
+  @IsMongoId()
   id: string;
 
   @Field(() => UpdateEmployeeInput, {

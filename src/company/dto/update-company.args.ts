@@ -1,5 +1,11 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
-import { IsNotEmptyObject, IsString, Length } from 'class-validator';
+import {
+  IsArray,
+  IsMongoId,
+  IsNotEmptyObject,
+  IsString,
+  Length,
+} from 'class-validator';
 
 @InputType()
 export class UpdateCompanyInput {
@@ -15,10 +21,8 @@ export class UpdateCompanyInput {
     description: 'The employees ids of the company',
     nullable: true,
   })
-  @IsString({
-    each: true,
-    message: 'Employees must be a string',
-  })
+  @IsArray()
+  @IsMongoId({ each: true })
   employees: string[];
 }
 
@@ -27,7 +31,7 @@ export class UpdateCompanyArgs {
   @Field(() => String, {
     description: 'The id of the company',
   })
-  @IsString()
+  @IsMongoId()
   id: string;
 
   @Field(() => UpdateCompanyInput, {

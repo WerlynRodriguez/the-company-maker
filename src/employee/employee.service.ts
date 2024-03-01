@@ -26,6 +26,14 @@ export class EmployeeService {
   }
 
   /**
+   * Get many employees by ids
+   * @param ids - employee ids
+   */
+  async findMany(ids: string[]): Promise<Employee[]> {
+    return this.employeeModel.find({ _id: { $in: ids } }).exec();
+  }
+
+  /**
    * Create an employee
    * @param employee - employee data
    */

@@ -3,6 +3,7 @@ import { CompanyService } from './company.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Company, CompanySchema } from 'src/schemas/company.schema';
 import { CompanyResolver } from './company.resolver';
+import { EmployeeModule } from 'src/employee/employee.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CompanyResolver } from './company.resolver';
         schema: CompanySchema,
       },
     ]),
+    EmployeeModule,
   ],
   providers: [CompanyService, CompanyResolver],
 })
