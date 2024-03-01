@@ -58,11 +58,41 @@ type Mutation {
   ): Employee!
 }
 
+input PaginationInput {
+  limit: Int = 10
+  page: Int = 0
+}
+
 type Query {
-  companies: [Company!]!
+  companies(
+    pagination: PaginationInput = {limit: 10, page: 1}
+
+    """The sort order of the companies"""
+    sortBy: SortOrderInputCompany = {name: asc}
+  ): [Company!]!
   company(id: ID!): Company!
   employee(id: ID!): Employee!
-  employees: [Employee!]!
+  employees(
+    pagination: PaginationInput = {limit: 10, page: 1}
+
+    """The sort order of the employees"""
+    sortBy: SortOrderInputEmployee = {firstName: asc}
+  ): [Employee!]!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input SortOrderInputCompany {
+  name: SortOrder
+}
+
+input SortOrderInputEmployee {
+  age: SortOrder
+  firstName: SortOrder
+  lastName: SortOrder
 }
 
 input UpdateCompanyInput {

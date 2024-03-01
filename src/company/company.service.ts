@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PaginationInput } from 'src/dto/pagination.args';
 import { Company, CompanyDocument } from 'src/schemas/company.schema';
+import { SortOrderInputCompany } from './dto/getall-company.args';
 
 @Injectable()
 export class CompanyService {
@@ -11,10 +13,20 @@ export class CompanyService {
   ) {}
 
   /**
-   * Get all companies
+   * Get all companies (with pagination and sorting)
    */
-  async findAll(): Promise<Company[]> {
-    return this.companyModel.find().exec();
+  async findAll(
+    pag: PaginationInput,
+    sort: SortOrderInputCompany,
+  ): Promise<Company[]> {
+    const { page, limit } = pag;
+    const sortBy = Object.keys(sort)[0];
+
+    return this.companyModel
+      .find()
+      .sort({ [sortBy]: sort[sortBy] })
+      .skip((page - 1) * limit)
+      .exec();
   }
 
   /**

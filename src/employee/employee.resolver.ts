@@ -4,14 +4,17 @@ import { EmployeeService } from './employee.service';
 import { Query } from '@nestjs/graphql';
 import { CreateEmployeeArgs } from './dto/create-employee.args';
 import { UpdateEmployeeArgs } from './dto/update-employee.args';
+import { GetAllEmployeeArgs } from './dto/getall-employee.args';
 
 @Resolver(() => EmployeeType)
 export class EmployeeResolver {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Query(() => [EmployeeType])
-  async employees() {
-    return this.employeeService.findAll();
+  async employees(@Args() args: GetAllEmployeeArgs) {
+    const { pagination, sortBy } = args;
+
+    return this.employeeService.findAll(pagination, sortBy);
   }
 
   @Query(() => EmployeeType)

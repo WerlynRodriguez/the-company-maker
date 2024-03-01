@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PaginationInput } from 'src/dto/pagination.args';
 import { Employee, EmployeeDocument } from 'src/schemas/employee.schema';
+import { SortOrderInputEmployee } from './dto/getall-employee.args';
 
 @Injectable()
 export class EmployeeService {
@@ -11,10 +13,21 @@ export class EmployeeService {
   ) {}
 
   /**
-   * Get all employees
+   * Get all employees (paginated, sorted)
    */
-  async findAll(): Promise<Employee[]> {
-    return this.employeeModel.find().exec();
+  async findAll(
+    pag: PaginationInput,
+    sort: SortOrderInputEmployee,
+  ): Promise<Employee[]> {
+    const { page, limit } = pag;
+    const sortBy = Object.keys(sort)[0];
+
+    return this.employeeModel
+      .find()
+      .sort({ [sortBy]: sort[sortBy] })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
   }
 
   /**

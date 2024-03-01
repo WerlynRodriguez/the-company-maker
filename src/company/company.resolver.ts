@@ -13,6 +13,7 @@ import { UpdateCompanyArgs } from './dto/update-company.args';
 import { CompanyType } from 'src/schemas/company.schema';
 import { ModifyEmployToCompanyArgs } from './dto/modify-employtocompany.args';
 import { EmployeeService } from 'src/employee/employee.service';
+import { GetAllCompanyArgs } from './dto/getall-company.args';
 
 @Resolver(() => CompanyType)
 export class CompanyResolver {
@@ -22,8 +23,10 @@ export class CompanyResolver {
   ) {}
 
   @Query(() => [CompanyType])
-  async companies() {
-    return this.companyService.findAll();
+  async companies(@Args() args: GetAllCompanyArgs) {
+    const { pagination, sortBy } = args;
+
+    return this.companyService.findAll(pagination, sortBy);
   }
 
   @Query(() => CompanyType)
