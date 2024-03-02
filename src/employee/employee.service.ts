@@ -1,15 +1,24 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationInput } from 'src/dto/pagination.args';
 import { Employee, EmployeeDocument } from 'src/schemas/employee.schema';
 import { SortOrderInputEmployee } from './dto/getall-employee.args';
+import { CreateEmployeeInput } from './dto/create-employee.args';
+import { CompanyService } from 'src/company/company.service';
 
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectModel(Employee.name)
     private employeeModel: Model<EmployeeDocument>,
+    @Inject(forwardRef(() => CompanyService))
+    private readonly companyService: CompanyService,
   ) {}
 
   /**
@@ -41,13 +50,17 @@ export class EmployeeService {
   }
 
   /**
-   * Validate if many employees exist
+   * Validate if a / multiple employees exist
    */
-  async validateMany(ids: string[]): Promise<boolean> {
+  async validate(id: string | string[]): Promise<boolean> {
+    const ids = Array.isArray(id) ? id : [id];
+
+    if (ids?.length === 0) return true;
+
     for (let i = 0; i < ids.length; i++) {
       const employee = await this.employeeModel.findById(ids[i]).exec();
       if (!employee)
-        throw new NotFoundException(`Employee Id in position ${i}, not found`);
+        throw new NotFoundException(`Employee Id at position ${i}, not found`);
     }
     return true;
   }
@@ -63,8 +76,9 @@ export class EmployeeService {
   /**
    * Create an employee
    * @param employee - employee data
+   * @todo - Validate if company exists, then add employee to it
    */
-  async create(employee: Employee): Promise<Employee> {
+  async create(employee: CreateEmployeeInput): Promise<Employee> {
     const newEmployee = new this.employeeModel(employee);
     return newEmployee.save();
   }
@@ -85,6 +99,7 @@ export class EmployeeService {
   /**
    * Delete an employee by id
    * @param id - employee id
+   * @todo - Validate if employee is in a company, then remove it
    */
   async remove(id: string): Promise<Employee> {
     return this.employeeModel.findByIdAndDelete(id).exec();

@@ -14,6 +14,7 @@ import { CompanyType } from 'src/schemas/company.schema';
 import { ModifyEmployToCompanyArgs } from './dto/modify-employtocompany.args';
 import { EmployeeService } from 'src/employee/employee.service';
 import { GetAllCompanyArgs } from './dto/getall-company.args';
+import { EmployeeType } from 'src/schemas/employee.schema';
 
 @Resolver(() => CompanyType)
 export class CompanyResolver {
@@ -86,7 +87,9 @@ export class CompanyResolver {
     return this.companyService.removeEmployees(id, employeeIds);
   }
 
-  @ResolveField()
+  @ResolveField('employees', () => [EmployeeType], {
+    description: 'Get all employees of a company',
+  })
   async employees(@Parent() company: CompanyType) {
     return this.employeeService.findMany(company.employees);
   }

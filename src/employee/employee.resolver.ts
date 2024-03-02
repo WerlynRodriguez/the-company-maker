@@ -1,14 +1,26 @@
-import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  // Parent,
+  // ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { EmployeeType } from 'src/schemas/employee.schema';
 import { EmployeeService } from './employee.service';
 import { Query } from '@nestjs/graphql';
 import { CreateEmployeeInput } from './dto/create-employee.args';
 import { UpdateEmployeeArgs } from './dto/update-employee.args';
 import { GetAllEmployeeArgs } from './dto/getall-employee.args';
+//import { CompanyType } from 'src/schemas/company.schema';
+import { CompanyService } from 'src/company/company.service';
 
 @Resolver(() => EmployeeType)
 export class EmployeeResolver {
-  constructor(private readonly employeeService: EmployeeService) {}
+  constructor(
+    private readonly employeeService: EmployeeService,
+    private readonly companyService: CompanyService,
+  ) {}
 
   @Query(() => [EmployeeType], {
     name: 'employees',
@@ -55,4 +67,12 @@ export class EmployeeResolver {
   async deleteEmployee(@Args('id', { type: () => ID }) id: string) {
     return this.employeeService.remove(id);
   }
+
+  /** @todo: Implement the field resolver for the company  */
+  // @ResolveField('company', () => CompanyType, {
+  //   description: 'The company of the employee',
+  // })
+  // async company(@Parent() employee: EmployeeType) {
+  //   return this.companyService.findById(employee.company);
+  // }
 }

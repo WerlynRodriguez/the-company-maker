@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { Transform } from 'class-transformer';
 import { IsNumber, IsString, Length, Max, Min } from 'class-validator';
+import { RemoveSpaces } from 'src/validators/RemoveSpaces';
 
 @InputType()
 export class CreateEmployeeInput {
@@ -8,6 +10,7 @@ export class CreateEmployeeInput {
   })
   @IsString()
   @Length(3, 50)
+  @Transform(RemoveSpaces)
   firstName: string;
 
   @Field(() => String, {
@@ -15,6 +18,7 @@ export class CreateEmployeeInput {
   })
   @IsString()
   @Length(3, 50)
+  @Transform(RemoveSpaces)
   lastName: string;
 
   @Field(() => Number, {

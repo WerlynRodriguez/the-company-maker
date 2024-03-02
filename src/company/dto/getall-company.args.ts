@@ -10,6 +10,13 @@ export class SortOrderInputCompany {
     nullable: true,
   })
   name?: SortOrder;
+
+  @Field(() => SortOrder, {
+    description:
+      'The sort order of the foundedAt (asc: old-new, desc: new-old)',
+    nullable: true,
+  })
+  foundedAt?: SortOrder;
 }
 
 @ArgsType()

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationInput } from 'src/dto/pagination.args';
@@ -12,6 +17,7 @@ export class CompanyService {
   constructor(
     @InjectModel(Company.name)
     private companyModel: Model<CompanyDocument>,
+    @Inject(forwardRef(() => EmployeeService))
     private readonly employeeService: EmployeeService,
   ) {}
 
@@ -49,6 +55,9 @@ export class CompanyService {
    */
   async create(company: CreateCompanyInput): Promise<Company> {
     const newCompany = new this.companyModel(company);
+
+    await this.employeeService.validate(company.employees);
+
     return newCompany.save();
   }
 
@@ -60,6 +69,8 @@ export class CompanyService {
   async update(id: string, toUpdate: Partial<Company>): Promise<Company> {
     const company = await this.findById(id);
 
+    await this.employeeService.validate(toUpdate.employees);
+
     company.set(toUpdate);
     return company.save();
   }
@@ -70,7 +81,8 @@ export class CompanyService {
    */
   async remove(id: string) {
     const company = await this.findById(id);
-    return company.deleteOne();
+    await company.deleteOne();
+    return company;
   }
 
   /**
@@ -82,7 +94,7 @@ export class CompanyService {
     const company = await this.findById(id);
 
     // Validate employees
-    await this.employeeService.validateMany(employees);
+    await this.employeeService.validate(employees);
 
     company.employees = [...company.employees, ...employees];
     return company.save();

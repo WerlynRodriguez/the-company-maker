@@ -3,14 +3,23 @@
 # ------------------------------------------------------
 
 type Company {
+  """All employees of the company"""
   employees: [Employee!]!
+
+  """Funded date, (default: now), format: 2024-03-02T17:56:56.827Z"""
+  foundedAt: DateTime!
   id: ID!
+
+  """The name of the company (Not unique)"""
   name: String!
 }
 
 input CreateCompanyInput {
   """The employees ids of the company"""
   employees: [ID!]
+
+  """Funded date, (default: now), format: 2024-03-02T17:56:56.827Z"""
+  foundedAt: DateTime
 
   """The name of the company (3-50 characters)"""
   name: String!
@@ -26,6 +35,11 @@ input CreateEmployeeInput {
   """The last name of the employee (3-50 characters)"""
   lastName: String!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Employee {
   age: Float!
@@ -124,6 +138,9 @@ enum SortOrder {
 }
 
 input SortOrderInputCompany {
+  """The sort order of the foundedAt (asc: old-new, desc: new-old)"""
+  foundedAt: SortOrder
+
   """The sort order of the name (asc: a-z, desc: z-a)"""
   name: SortOrder
 }
@@ -142,6 +159,9 @@ input SortOrderInputEmployee {
 input UpdateCompanyInput {
   """The employees ids of the company"""
   employees: [ID!]
+
+  """Funded date, (default: now), format: 2024-03-02T17:56:56.827Z"""
+  foundedAt: DateTime
 
   """The name of the company (3-50 characters)"""
   name: String

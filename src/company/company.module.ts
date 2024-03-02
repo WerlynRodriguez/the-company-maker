@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Company, CompanySchema } from 'src/schemas/company.schema';
@@ -13,8 +13,9 @@ import { EmployeeModule } from 'src/employee/employee.module';
         schema: CompanySchema,
       },
     ]),
-    EmployeeModule,
+    forwardRef(() => EmployeeModule),
   ],
   providers: [CompanyService, CompanyResolver],
+  exports: [CompanyService],
 })
 export class CompanyModule {}
