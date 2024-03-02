@@ -22,6 +22,10 @@ export class EmployeeResolver {
     private readonly companyService: CompanyService,
   ) {}
 
+  /**
+   * Get all employees (paginated, sorted by field)
+   * @todo: Add filters (where) and search (search) to the query
+   */
   @Query(() => [EmployeeType], {
     name: 'employees',
     description: 'Get all employees (paginated, sorted by field)',
