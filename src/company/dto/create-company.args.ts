@@ -4,7 +4,7 @@ import { IsArray, IsMongoId, IsString, Length } from 'class-validator';
 @InputType()
 export class CreateCompanyInput {
   @Field(() => String, {
-    description: 'The name of the company',
+    description: 'The name of the company (3-50 characters)',
   })
   @IsString()
   @Length(3, 50)

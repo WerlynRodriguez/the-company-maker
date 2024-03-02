@@ -12,18 +12,18 @@ input CreateCompanyInput {
   """The employees ids of the company"""
   employees: [String!]
 
-  """The name of the company"""
+  """The name of the company (3-50 characters)"""
   name: String!
 }
 
 input CreateEmployeeInput {
-  """The age of the employee"""
+  """The age of the employee (18-65)"""
   age: Float!
 
-  """The first name of the employee"""
+  """The first name of the employee (3-50 characters)"""
   firstName: String!
 
-  """The last name of the employee"""
+  """The last name of the employee (3-50 characters)"""
   lastName: String!
 }
 
@@ -35,6 +35,7 @@ type Employee {
 }
 
 type Mutation {
+  """Add multiple employees to a company by id"""
   addEmployeesToCompany(
     """The ids of the employees"""
     employeeIds: [ID!]!
@@ -42,10 +43,20 @@ type Mutation {
     """The id of the company"""
     id: ID!
   ): Company!
+
+  """Create a new company"""
   createCompany(input: CreateCompanyInput!): Company!
+
+  """Create a new employee"""
   createEmployee(input: CreateEmployeeInput!): Employee!
+
+  """Delete a company by id"""
   deleteCompany(id: ID!): Company!
+
+  """Delete an employee by id"""
   deleteEmployee(id: ID!): Employee!
+
+  """Remove multiple employees from a company by id"""
   removeEmployeesFromCompany(
     """The ids of the employees"""
     employeeIds: [ID!]!
@@ -53,6 +64,8 @@ type Mutation {
     """The id of the company"""
     id: ID!
   ): Company!
+
+  """Update a company by id"""
   updateCompany(
     """The id of the company"""
     id: String!
@@ -60,6 +73,8 @@ type Mutation {
     """The data of the company"""
     input: UpdateCompanyInput!
   ): Company!
+
+  """Update an employee by id"""
   updateEmployee(
     """The id of the employee"""
     id: String!
@@ -70,23 +85,35 @@ type Mutation {
 }
 
 input PaginationInput {
+  """Limit of items per page (1 min - 50 max), default 10"""
   limit: Int = 10
-  page: Int = 0
+
+  """Page number (1 min) default 1"""
+  page: Int = 1
 }
 
 type Query {
+  """Get all companies (paginated, sorted by field)"""
   companies(
+    """Pagination options"""
     pagination: PaginationInput = {limit: 10, page: 1}
 
-    """The sort order of the companies"""
+    """The sort order of the companies, default ascending by name."""
     sortBy: SortOrderInputCompany = {name: asc}
   ): [Company!]!
+
+  """Get a company by id"""
   company(id: ID!): Company!
+
+  """Get an employee by id"""
   employee(id: ID!): Employee!
+
+  """Get all employees (paginated, sorted by field)"""
   employees(
+    """Pagination options"""
     pagination: PaginationInput = {limit: 10, page: 1}
 
-    """The sort order of the employees"""
+    """The sort order of the employees, default ascending by first name."""
     sortBy: SortOrderInputEmployee = {firstName: asc}
   ): [Employee!]!
 }
@@ -97,12 +124,18 @@ enum SortOrder {
 }
 
 input SortOrderInputCompany {
+  """The sort order of the name (asc: a-z, desc: z-a)"""
   name: SortOrder
 }
 
 input SortOrderInputEmployee {
+  """The sort order of the age (asc: 18-65, desc: 65-18)"""
   age: SortOrder
+
+  """The sort order of the first name (asc: a-z, desc: z-a)"""
   firstName: SortOrder
+
+  """The sort order of the last name (asc: a-z, desc: z-a)"""
   lastName: SortOrder
 }
 
@@ -110,17 +143,17 @@ input UpdateCompanyInput {
   """The employees ids of the company"""
   employees: [String!]
 
-  """The name of the company"""
+  """The name of the company (3-50 characters)"""
   name: String
 }
 
 input UpdateEmployeeInput {
-  """The age of the employee"""
+  """The age of the employee (18-65)"""
   age: Float
 
-  """The first name of the employee"""
+  """The first name of the employee (3-50 characters)"""
   firstName: String
 
-  """The last name of the employee"""
+  """The last name of the employee (3-50 characters)"""
   lastName: String
 }

@@ -4,13 +4,22 @@ import { SortOrder } from 'src/dto/sorting.args';
 
 @InputType()
 export class SortOrderInputEmployee {
-  @Field(() => SortOrder, { nullable: true })
+  @Field(() => SortOrder, {
+    description: 'The sort order of the first name (asc: a-z, desc: z-a)',
+    nullable: true,
+  })
   firstName?: SortOrder;
 
-  @Field(() => SortOrder, { nullable: true })
+  @Field(() => SortOrder, {
+    description: 'The sort order of the last name (asc: a-z, desc: z-a)',
+    nullable: true,
+  })
   lastName?: SortOrder;
 
-  @Field(() => SortOrder, { nullable: true })
+  @Field(() => SortOrder, {
+    description: 'The sort order of the age (asc: 18-65, desc: 65-18)',
+    nullable: true,
+  })
   age?: SortOrder;
 }
 
@@ -18,7 +27,8 @@ export class SortOrderInputEmployee {
 export class GetAllEmployeeArgs extends PaginationArgs {
   @Field(() => SortOrderInputEmployee, {
     nullable: true,
-    description: 'The sort order of the employees',
+    description:
+      'The sort order of the employees, default ascending by first name.',
     defaultValue: { firstName: SortOrder.asc },
   })
   sortBy?: SortOrderInputEmployee;

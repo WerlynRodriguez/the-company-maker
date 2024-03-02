@@ -22,19 +22,28 @@ export class CompanyResolver {
     private readonly employeeService: EmployeeService,
   ) {}
 
-  @Query(() => [CompanyType])
+  @Query(() => [CompanyType], {
+    name: 'companies',
+    description: 'Get all companies (paginated, sorted by field)',
+  })
   async companies(@Args() args: GetAllCompanyArgs) {
     const { pagination, sortBy } = args;
 
     return this.companyService.findAll(pagination, sortBy);
   }
 
-  @Query(() => CompanyType)
+  @Query(() => CompanyType, {
+    name: 'company',
+    description: 'Get a company by id',
+  })
   async company(@Args('id', { type: () => ID }) id: string) {
     return this.companyService.findOne(id);
   }
 
-  @Mutation(() => CompanyType)
+  @Mutation(() => CompanyType, {
+    name: 'createCompany',
+    description: 'Create a new company',
+  })
   async createCompany(
     @Args('input', { type: () => CreateCompanyInput })
     input: CreateCompanyInput,
@@ -42,24 +51,36 @@ export class CompanyResolver {
     return this.companyService.create(input);
   }
 
-  @Mutation(() => CompanyType)
+  @Mutation(() => CompanyType, {
+    name: 'updateCompany',
+    description: 'Update a company by id',
+  })
   async updateCompany(@Args() args: UpdateCompanyArgs) {
     const { id, input } = args;
     return this.companyService.update(id, input);
   }
 
-  @Mutation(() => CompanyType)
+  @Mutation(() => CompanyType, {
+    name: 'deleteCompany',
+    description: 'Delete a company by id',
+  })
   async deleteCompany(@Args('id', { type: () => ID }) id: string) {
     return this.companyService.remove(id);
   }
 
-  @Mutation(() => CompanyType)
+  @Mutation(() => CompanyType, {
+    name: 'addEmployeesToCompany',
+    description: 'Add multiple employees to a company by id',
+  })
   async addEmployeesToCompany(@Args() args: ModifyEmployToCompanyArgs) {
     const { id, employeeIds } = args;
     return this.companyService.addEmployees(id, employeeIds);
   }
 
-  @Mutation(() => CompanyType)
+  @Mutation(() => CompanyType, {
+    name: 'removeEmployeesFromCompany',
+    description: 'Remove multiple employees from a company by id',
+  })
   async removeEmployeesFromCompany(@Args() args: ModifyEmployToCompanyArgs) {
     const { id, employeeIds } = args;
     return this.companyService.removeEmployees(id, employeeIds);

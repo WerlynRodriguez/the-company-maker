@@ -4,21 +4,21 @@ import { IsNumber, IsString, Length, Max, Min } from 'class-validator';
 @InputType()
 export class CreateEmployeeInput {
   @Field(() => String, {
-    description: 'The first name of the employee',
+    description: 'The first name of the employee (3-50 characters)',
   })
   @IsString()
   @Length(3, 50)
   firstName: string;
 
   @Field(() => String, {
-    description: 'The last name of the employee',
+    description: 'The last name of the employee (3-50 characters)',
   })
   @IsString()
   @Length(3, 50)
   lastName: string;
 
   @Field(() => Number, {
-    description: 'The age of the employee',
+    description: 'The age of the employee (18-65)',
   })
   @IsNumber()
   @Max(65)

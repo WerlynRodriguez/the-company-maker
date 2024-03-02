@@ -4,7 +4,10 @@ import { SortOrder } from 'src/dto/sorting.args';
 
 @InputType()
 export class SortOrderInputCompany {
-  @Field(() => SortOrder, { nullable: true })
+  @Field(() => SortOrder, {
+    description: 'The sort order of the name (asc: a-z, desc: z-a)',
+    nullable: true,
+  })
   name?: SortOrder;
 }
 
@@ -12,7 +15,7 @@ export class SortOrderInputCompany {
 export class GetAllCompanyArgs extends PaginationArgs {
   @Field(() => SortOrderInputCompany, {
     nullable: true,
-    description: 'The sort order of the companies',
+    description: 'The sort order of the companies, default ascending by name.',
     defaultValue: { name: SortOrder.asc },
   })
   sortBy?: SortOrderInputCompany;
