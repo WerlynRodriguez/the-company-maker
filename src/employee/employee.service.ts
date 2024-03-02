@@ -72,7 +72,7 @@ export class EmployeeService {
    * Delete an employee by id
    * @param id - employee id
    */
-  async remove(id: string) {
+  async remove(id: string): Promise<Employee> {
     return this.employeeModel.findByIdAndDelete(id).exec();
   }
 }

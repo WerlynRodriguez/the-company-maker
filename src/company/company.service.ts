@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { PaginationInput } from 'src/dto/pagination.args';
 import { Company, CompanyDocument } from 'src/schemas/company.schema';
 import { SortOrderInputCompany } from './dto/getall-company.args';
+import { CreateCompanyInput } from './dto/create-company.args';
 
 @Injectable()
 export class CompanyService {
@@ -41,7 +42,7 @@ export class CompanyService {
    * Create a company
    * @param name - company name
    */
-  async create(company: Company): Promise<Company> {
+  async create(company: CreateCompanyInput): Promise<Company> {
     const newCompany = new this.companyModel(company);
     return newCompany.save();
   }

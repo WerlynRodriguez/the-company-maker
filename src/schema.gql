@@ -10,7 +10,7 @@ type Company {
 
 input CreateCompanyInput {
   """The employees ids of the company"""
-  employees: [String!]
+  employees: [ID!]
 
   """The name of the company (3-50 characters)"""
   name: String!
@@ -141,7 +141,7 @@ input SortOrderInputEmployee {
 
 input UpdateCompanyInput {
   """The employees ids of the company"""
-  employees: [String!]
+  employees: [ID!]
 
   """The name of the company (3-50 characters)"""
   name: String
