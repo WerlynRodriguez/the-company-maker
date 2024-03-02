@@ -41,6 +41,18 @@ export class EmployeeService {
   }
 
   /**
+   * Validate if many employees exist
+   */
+  async validateMany(ids: string[]): Promise<boolean> {
+    for (let i = 0; i < ids.length; i++) {
+      const employee = await this.employeeModel.findById(ids[i]).exec();
+      if (!employee)
+        throw new NotFoundException(`Employee Id in position ${i}, not found`);
+    }
+    return true;
+  }
+
+  /**
    * Get many employees by ids
    * @param ids - employee ids
    */

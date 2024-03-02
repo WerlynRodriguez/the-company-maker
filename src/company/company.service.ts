@@ -5,12 +5,14 @@ import { PaginationInput } from 'src/dto/pagination.args';
 import { Company, CompanyDocument } from 'src/schemas/company.schema';
 import { SortOrderInputCompany } from './dto/getall-company.args';
 import { CreateCompanyInput } from './dto/create-company.args';
+import { EmployeeService } from 'src/employee/employee.service';
 
 @Injectable()
 export class CompanyService {
   constructor(
     @InjectModel(Company.name)
     private companyModel: Model<CompanyDocument>,
+    private readonly employeeService: EmployeeService,
   ) {}
 
   /**
@@ -78,6 +80,9 @@ export class CompanyService {
    */
   async addEmployees(id: string, employees: string[]) {
     const company = await this.findById(id);
+
+    // Validate employees
+    await this.employeeService.validateMany(employees);
 
     company.employees = [...company.employees, ...employees];
     return company.save();
