@@ -1,6 +1,8 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
+import { IsOptional } from 'class-validator';
 import { PaginationArgs } from 'src/dto/pagination.args';
 import { SortOrder } from 'src/dto/sorting.args';
+import { IsSortByType } from 'src/validators/IsSortByType';
 
 @InputType()
 export class SortOrderInputEmployee {
@@ -31,5 +33,7 @@ export class GetAllEmployeeArgs extends PaginationArgs {
       'The sort order of the employees, default ascending by first name.',
     defaultValue: { firstName: SortOrder.asc },
   })
+  @IsOptional()
+  @IsSortByType()
   sortBy?: SortOrderInputEmployee;
 }

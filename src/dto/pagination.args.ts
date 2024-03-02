@@ -1,5 +1,11 @@
 import { ArgsType, Field, InputType, Int } from '@nestjs/graphql';
-import { IsNumber, Max, Min } from 'class-validator';
+import {
+  IsNotEmptyObject,
+  IsNumber,
+  IsOptional,
+  Max,
+  Min,
+} from 'class-validator';
 
 @InputType()
 export class PaginationInput {
@@ -33,5 +39,7 @@ export class PaginationArgs {
       limit: 10,
     },
   })
+  @IsOptional()
+  @IsNotEmptyObject()
   pagination?: PaginationInput;
 }
