@@ -25,7 +25,7 @@ export class EmployeeResolver {
     description: 'Get an employee by id',
   })
   async employee(@Args('id', { type: () => ID }) id: string) {
-    return this.employeeService.findOne(id);
+    return this.employeeService.findById(id);
   }
 
   @Mutation(() => EmployeeType, {

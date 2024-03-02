@@ -37,7 +37,7 @@ export class CompanyResolver {
     description: 'Get a company by id',
   })
   async company(@Args('id', { type: () => ID }) id: string) {
-    return this.companyService.findOne(id);
+    return this.companyService.findById(id);
   }
 
   @Mutation(() => CompanyType, {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationInput } from 'src/dto/pagination.args';
@@ -31,11 +31,14 @@ export class CompanyService {
   }
 
   /**
-   * Get a company by id
+   * Get a company by id, used internally
    * @param id - company id
    */
-  async findOne(id: string): Promise<Company | null> {
-    return this.companyModel.findById(id).exec();
+  async findById(id: string): Promise<CompanyDocument> {
+    const company = await this.companyModel.findById(id).exec();
+
+    if (!company) throw new NotFoundException('Company not found');
+    return company;
   }
 
   /**
@@ -50,14 +53,13 @@ export class CompanyService {
   /**
    * Update a company by id
    * @param id - company id
-   * @param company - company data
+   * @param company - company data to update
    */
-  async update(id: string, company: Partial<Company>): Promise<Company> {
-    return this.companyModel
-      .findByIdAndUpdate(id, company, {
-        new: true,
-      })
-      .exec();
+  async update(id: string, toUpdate: Partial<Company>): Promise<Company> {
+    const company = await this.findById(id);
+
+    company.set(toUpdate);
+    return company.save();
   }
 
   /**
@@ -65,7 +67,8 @@ export class CompanyService {
    * @param id - company id
    */
   async remove(id: string) {
-    return this.companyModel.findByIdAndDelete(id).exec();
+    const company = await this.findById(id);
+    return company.deleteOne();
   }
 
   /**
@@ -74,11 +77,7 @@ export class CompanyService {
    * @param employees - employees ids
    */
   async addEmployees(id: string, employees: string[]) {
-    const company = await this.companyModel.findOne({ _id: id }).exec();
-
-    if (!company) {
-      return null;
-    }
+    const company = await this.findById(id);
 
     company.employees = [...company.employees, ...employees];
     return company.save();
@@ -90,11 +89,7 @@ export class CompanyService {
    * @param employees - employees ids
    */
   async removeEmployees(id: string, employees: string[]) {
-    const company = await this.companyModel.findOne({ _id: id }).exec();
-
-    if (!company) {
-      return null;
-    }
+    const company = await this.findById(id);
 
     company.employees = company.employees.filter(
       (employee) => !employees.includes(employee),

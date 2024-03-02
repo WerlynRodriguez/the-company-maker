@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationInput } from 'src/dto/pagination.args';
@@ -32,10 +32,12 @@ export class EmployeeService {
 
   /**
    * Get an employee by id
-   * @param id - employee id
    */
-  async findOne(id: string): Promise<Employee> {
-    return this.employeeModel.findById(id).exec();
+  async findById(id: string): Promise<EmployeeDocument> {
+    const employee = await this.employeeModel.findById(id).exec();
+
+    if (!employee) throw new NotFoundException('Employee not found');
+    return employee;
   }
 
   /**
